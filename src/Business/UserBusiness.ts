@@ -57,7 +57,7 @@ export class UserBusiness{
             if(email.length < 6) throw new PasswordInvalid()
 
             const verifyEmail = await this.userDatabase.verifyEmail(email)
-            if(!verifyEmail) throw new UserNotFound()
+            if(verifyEmail.length !== 1) throw new UserNotFound()
             if(verifyEmail[0].password !== password) throw new PasswordWrong()
 
             const token = this.authenticator.generateToken({id:verifyEmail[0].id})
