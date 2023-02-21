@@ -2,6 +2,7 @@ import { LoginDTO, NewEditDTO, NewRemoveDTO, NewUserDTO, UserDTO } from './../Mo
 import { UserDatabase } from "../BaseDatabase/UsersDatabase"
 import { IdGenerator } from "../Services/idGenerator"
 import { Authenticator } from '../Services/authenticatos';
+import { BodyNotInserted, EmailInvalid, NotAuthorized, PasswordInvalid, PasswordNotInserted, PasswordWrong, UserNotFound } from '../Error/Errors';
 
 export class UserBusiness{
     userDatabase = new UserDatabase()
@@ -11,7 +12,7 @@ export class UserBusiness{
         try {
 
             const verifyToken = this.authenticator.getTokenData(token)
-            if(!verifyToken) throw new Error('NotAuthorized');
+            if(!verifyToken) throw new NotAuthorized();
             
 
             const result = this.userDatabase.getAllUsers() 
@@ -24,9 +25,9 @@ export class UserBusiness{
     signup = async(user:UserDTO)=>{
         try {
             const {name, email, password} = user
-            if(!name || !email|| !password) throw new Error('BodyNotInserted')
-            if(!email.includes('@')) throw new Error('FormatInvalidEmail')
-            if(password.length < 6) throw new Error('Password must be at least 6 characters')
+            if(!name || !email|| !password) throw new BodyNotInserted()
+            if(!email.includes('@')) throw new EmailInvalid()
+            if(password.length < 6) throw new PasswordInvalid()
 
             const id: string = IdGenerator.GenerateId()
 
@@ -51,18 +52,16 @@ export class UserBusiness{
     login = async(user:LoginDTO)=>{
         try {
             const {email, password} = user
-            if(!email || !password) throw new Error('BodyNotInserted');
-            if(!email.includes('@')) throw new Error('FormatInvalidEmail')
-            if(email.length < 6) throw new Error('Password must be at least 6 characters')
+            if(!email || !password) throw new BodyNotInserted()
+            if(!email.includes('@')) throw new EmailInvalid()
+            if(email.length < 6) throw new PasswordInvalid()
 
             const verifyEmail = await this.userDatabase.verifyEmail(email)
-            if(!verifyEmail) throw new Error('UserNotFound')
-            if(verifyEmail[0].password !== password) throw new Error('Password Incorrect')
+            if(!verifyEmail) throw new UserNotFound()
+            if(verifyEmail[0].password !== password) throw new PasswordWrong()
 
             const token = this.authenticator.generateToken({id:verifyEmail[0].id})
             return token
-
-            
 
         } catch (error:any) {
             throw new Error(error.message);
@@ -75,10 +74,10 @@ export class UserBusiness{
             const {id, password} = newEdit
            
             const verifyToken = this.authenticator.getTokenData(token)
-            if(!verifyToken) throw new Error('NotAuthorized')
+            if(!verifyToken) throw new NotAuthorized()
             
-            if(!password) throw new Error('PasswordNotInserted')
-            if(password.length < 6) throw new Error('Password must be at least 6 characters')
+            if(!password) throw new PasswordNotInserted()
+            if(password.length < 6) throw new PasswordInvalid()
             
 
             const edit:NewEditDTO = {
@@ -87,7 +86,7 @@ export class UserBusiness{
             }
 
             const userExist = await this.userDatabase.verifyUserByID(id)
-            if(userExist.length !== 1) throw new Error('UserNotFound or IdNotInserted');
+            if(userExist.length !== 1) throw new UserNotFound();
             
 
             await this.userDatabase.update(edit)
@@ -102,17 +101,17 @@ export class UserBusiness{
     remove = async(removeUser:NewRemoveDTO, token:string)=>{
         try {
             const {id} = removeUser
-            if(!id) throw new Error('IdNotInserted')
+
+            const userExist = await this.userDatabase.verifyUserByID(id)
+            if(userExist.length !== 1) throw new UserNotFound()
 
             const verifyToken = this.authenticator.getTokenData(token)
-            if(!verifyToken) throw new Error('NotAuthorized')
+            if(!verifyToken) throw new NotAuthorized()
 
             const newRemoveUser:NewRemoveDTO = {
                 id
             }
 
-            const userExist = await this.userDatabase.verifyUserByID(id)
-            if(userExist.length !== 1) throw new Error('UserNotFound or IdNotInserted');
 
             await this.userDatabase.remove(newRemoveUser)
             
