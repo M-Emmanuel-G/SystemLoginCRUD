@@ -36,9 +36,11 @@ Link do render
  https://login-crud.onrender.com/users/create 
 
   {
+  
     "name":"",
     "email":"",
     "password":""
+    
   }
 
 ### Login 
@@ -46,8 +48,10 @@ Link do render
   https://login-crud.onrender.com/users/login 
   
    {
+   
        "email":"",
        "password":""
+       
    }
  
  ### Todos os Usuários
