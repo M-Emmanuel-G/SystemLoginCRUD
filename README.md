@@ -35,21 +35,40 @@ Link do render
   
 ** endpoint **
 
-{
-  "name":"",
-  "email":"",
-  "password":""
-}
+  {
+    "name":"",
+    "email":"",
+    "password":""
+  }
 
 ### Login 
 
  ** endpoint **
     
- {
-    "email":"",
-    "password":""
- }
+   {
+      "email":"",
+      "password":""
+   }
  
  ### Todos os Usuários
  
  ** endpoint **
+ 
+ authorization: ""
+ 
+ ### Editar senha usuário
+ 
+ ** endpoint **
+ 
+ authorization: ""
+ 
+   {
+    "password":""
+   }
+ 
+ ### Deletar usuário
+ 
+ ** endpoint **
+ 
+ authorization: ""
+ 
