@@ -66,4 +66,17 @@ export class UserDatabase extends BaseDatabase {
         }
     }
 
+    verifyEmail = async(email:string)=>{
+        try {
+        const result = await UserDatabase.connection
+            .select()
+            .where({email})
+            .from(this.TABLE_NAME)
+        return result    
+        } catch (error:any) {
+            throw new Error(error.message);
+            
+        }
+    }
+
 }
