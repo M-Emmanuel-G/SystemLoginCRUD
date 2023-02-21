@@ -1,11 +1,19 @@
-import { NewEditDTO, NewRemoveDTO, NewUserDTO, UserDTO } from './../Model/Users';
+import { LoginDTO, NewEditDTO, NewRemoveDTO, NewUserDTO, UserDTO } from './../Model/Users';
 import { UserDatabase } from "../BaseDatabase/UsersDatabase"
 import { IdGenerator } from "../Services/idGenerator"
+import { Authenticator } from '../Services/authenticatos';
 
 export class UserBusiness{
     userDatabase = new UserDatabase()
-    getAllUsers = async ()=>{
+    authenticator = new Authenticator()
+
+    getAllUsers = async (token:string)=>{
         try {
+
+            const verifyToken = this.authenticator.getTokenData(token)
+            if(!verifyToken) throw new Error('NotAuthorized');
+            
+
             const result = this.userDatabase.getAllUsers() 
             return result   
         } catch (error:any) {
@@ -20,7 +28,7 @@ export class UserBusiness{
             if(!email.includes('@')) throw new Error('FormatInvalidEmail')
             if(password.length < 6) throw new Error('Password must be at least 6 characters')
 
-            const id = IdGenerator.GenerateId()
+            const id: string = IdGenerator.GenerateId()
 
             const newUser:NewUserDTO = {
                 id, 
@@ -29,7 +37,10 @@ export class UserBusiness{
                 password
 
             }
+
             await this.userDatabase.SignUp(newUser)
+            const token = this.authenticator.generateToken({id})
+            return token
 
         } catch (error:any) {
             throw new Error(error.message);
@@ -37,12 +48,38 @@ export class UserBusiness{
         }
     }
 
-    update = async(newEdit:NewEditDTO)=>{
+    login = async(user:LoginDTO)=>{
+        try {
+            const {email, password} = user
+            if(!email || !password) throw new Error('BodyNotInserted');
+            if(!email.includes('@')) throw new Error('FormatInvalidEmail')
+            if(email.length < 6) throw new Error('Password must be at least 6 characters')
+
+            const verifyEmail = await this.userDatabase.verifyEmail(email)
+            if(!verifyEmail) throw new Error('UserNotFound')
+            if(verifyEmail[0].password !== password) throw new Error('Password Incorrect')
+
+            const token = this.authenticator.generateToken({id:verifyEmail[0].id})
+            return token
+
+            
+
+        } catch (error:any) {
+            throw new Error(error.message);
+            
+        }
+    }
+
+    update = async(newEdit:NewEditDTO, token:string)=>{
         try {
             const {id, password} = newEdit
-
-            // if(!password) throw new Error('PasswordNotInserted')
-            // if(password.length < 6) throw new Error('Password must be at least 6 characters')
+           
+            const verifyToken = this.authenticator.getTokenData(token)
+            if(!verifyToken) throw new Error('NotAuthorized')
+            
+            if(!password) throw new Error('PasswordNotInserted')
+            if(password.length < 6) throw new Error('Password must be at least 6 characters')
+            
 
             const edit:NewEditDTO = {
                 id, 
@@ -52,6 +89,7 @@ export class UserBusiness{
             const userExist = await this.userDatabase.verifyUserByID(id)
             if(userExist.length !== 1) throw new Error('UserNotFound or IdNotInserted');
             
+
             await this.userDatabase.update(edit)
             
 
@@ -61,10 +99,13 @@ export class UserBusiness{
         }
     }
 
-    remove = async(removeUser:NewRemoveDTO)=>{
+    remove = async(removeUser:NewRemoveDTO, token:string)=>{
         try {
             const {id} = removeUser
             if(!id) throw new Error('IdNotInserted')
+
+            const verifyToken = this.authenticator.getTokenData(token)
+            if(!verifyToken) throw new Error('NotAuthorized')
 
             const newRemoveUser:NewRemoveDTO = {
                 id

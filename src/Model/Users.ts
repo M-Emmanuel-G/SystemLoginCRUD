@@ -19,3 +19,8 @@ export interface NewEditDTO{
 export interface NewRemoveDTO{
     id: string;
 }
+
+export interface LoginDTO{
+    email:string;
+    password:string;
+}
