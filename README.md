@@ -33,7 +33,7 @@ Link do render
 
 ### Criar usuário:
   
-** https://login-crud.onrender.com/users/create **
+ https://login-crud.onrender.com/users/create 
 
   {
     "name":"",
@@ -43,34 +43,34 @@ Link do render
 
 ### Login 
 
- ** https://login-crud.onrender.com/users/login **
-    
+  https://login-crud.onrender.com/users/login 
+  
    {
-      * "email":"",
-      * "password":""
+       "email":"",
+       "password":""
    }
  
  ### Todos os Usuários
  
- ** https://login-crud.onrender.com/users/all **
+  https://login-crud.onrender.com/users/all 
   
  authorization: ""
  
  ### Editar senha usuário
  
- ** https://login-crud.onrender.com/users/update/:id **
+ https://login-crud.onrender.com/users/update/:id 
  
  authorization: ""
  
    {
-    *
-    * "password":""
-    *
+    
+     "password":""
+    
    }
  
  ### Deletar usuário
  
- ** https://login-crud.onrender.com/users/delete/:id **
+  https://login-crud.onrender.com/users/delete/:id
  
  authorization: ""
  
