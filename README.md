@@ -28,3 +28,28 @@ Link do render
 * Criando tabelas no mysql ( Users: id, name, email, password )
 * Execute o comando **NPM INSTALL**
 * Configurar/criar o dotenv para conexão com o banco de dados e criar chave do JWT
+
+## Endpoints:
+
+### Criar usuário:
+  
+** endpoint **
+
+{
+  "name":"",
+  "email":"",
+  "password":""
+}
+
+### Login 
+
+ ** endpoint **
+    
+ {
+    "email":"",
+    "password":""
+ }
+ 
+ ### Todos os Usuários
+ 
+ ** endpoint **
