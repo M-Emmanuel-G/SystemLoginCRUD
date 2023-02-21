@@ -5,9 +5,7 @@
   Este é um sistema simples onde o usuário possa criar uma conta, realizar login, e vizualizar todos os usuarios após o login.
   O usuário que estiver logado será fornecido um token, onde será possivel editar senha de sua conta e exclui-la.
 
-Link da documentacao
-
-Link do render
+Link da API: https://login-crud.onrender.com
 
 ## Tecnologias utilizadas e conceitos:
 
