@@ -1,3 +1,4 @@
+import { TokenNotInserted } from './../Error/Errors';
 import { LoginDTO, NewEditDTO, NewRemoveDTO, NewUserDTO, UserDTO } from './../Model/Users';
 import { UserDatabase } from "../BaseDatabase/UsersDatabase"
 import { IdGenerator } from "../Services/idGenerator"
@@ -118,6 +119,20 @@ export class UserBusiness{
         } catch (error:any) {
             throw new Error(error.message);
             
+        }
+    }
+
+    getProfile = async (inToken:string)=>{
+        try {
+            if(!inToken) throw new TokenNotInserted()
+            
+            const token = this.authenticator.getTokenData(inToken)
+            if(!token) throw new NotAuthorized()
+
+            const result = await this.userDatabase.getProfile(token)
+            return result
+        } catch (error:any) {
+            throw new Error(error.message);
         }
     }
 

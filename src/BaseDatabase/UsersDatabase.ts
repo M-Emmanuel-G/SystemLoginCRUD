@@ -1,3 +1,4 @@
+import { AuthenticationData } from "../Model/Authenticator";
 import { NewEditDTO, NewRemoveDTO, NewUserDTO } from "../Model/Users";
 import { BaseDatabase } from "./BaseDatabase";
 
@@ -74,6 +75,19 @@ export class UserDatabase extends BaseDatabase {
             .from(this.TABLE_NAME)
         return result    
         } catch (error:any) {
+            throw new Error(error.message);
+            
+        }
+    }
+
+    getProfile = async (token:AuthenticationData)=>{
+        try {
+            const result = await UserDatabase.connection
+                .select()
+                .from(this.TABLE_NAME)
+                .where({id:token.id})
+            return result[0]
+            } catch (error:any) {
             throw new Error(error.message);
             
         }

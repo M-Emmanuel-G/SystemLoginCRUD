@@ -9,4 +9,5 @@ userRouter.post('/signup', userController.signup)
 userRouter.post('/login', userController.login)
 userRouter.patch('/update/:id', userController.update)
 userRouter.delete('/delete/:id', userController.remove)
+userRouter.get('/profile', userController.getProfile)
 

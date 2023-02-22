@@ -85,4 +85,14 @@ export class UserController{
             res.status(200).send(error.message || error.mysql)
         }
     }
+
+    getProfile = async(req:Request, res:Response)=>{
+        try {
+            const inToken = req.headers.authorization as string
+            const result = await this.userBusiness.getProfile(inToken)
+            res.status(200).send(result)
+        } catch (error:any) {
+            res.status(400).send(error.message)
+        }
+    }
 }
