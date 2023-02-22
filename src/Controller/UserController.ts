@@ -45,7 +45,7 @@ export class UserController{
             res.status(200).send({message:'Login Realizado com sucesso', token})
             
         } catch (error:any) {
-            res.status(200).send(error.message || error.mysql);
+            res.status(400).send(error.message);
             
         }
     }
