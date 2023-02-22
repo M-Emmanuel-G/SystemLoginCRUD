@@ -31,7 +31,7 @@ Link da API: https://login-crud.onrender.com
 
 ### Criar usuário:
   
- https://login-crud.onrender.com/users/create 
+ https://login-crud.onrender.com/users/signup 
 
   {
   
