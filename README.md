@@ -31,7 +31,7 @@ Link da API: https://login-crud.onrender.com
 
 ### Criar usuário:
   
- https://login-crud.onrender.com/users/signup 
+ POST https://login-crud.onrender.com/users/signup 
 
   {
   
@@ -43,7 +43,7 @@ Link da API: https://login-crud.onrender.com
 
 ### Login 
 
-  https://login-crud.onrender.com/users/login 
+  POST https://login-crud.onrender.com/users/login 
   
    {
    
@@ -54,13 +54,13 @@ Link da API: https://login-crud.onrender.com
  
  ### Todos os Usuários
  
-  https://login-crud.onrender.com/users/all 
+  GET https://login-crud.onrender.com/users/all 
   
  authorization: ""
  
  ### Editar senha usuário
  
- https://login-crud.onrender.com/users/update/:id 
+ PATCH https://login-crud.onrender.com/users/update/:id 
  
  authorization: ""
  
@@ -72,7 +72,13 @@ Link da API: https://login-crud.onrender.com
  
  ### Deletar usuário
  
-  https://login-crud.onrender.com/users/delete/:id
+  DEL https://login-crud.onrender.com/users/delete/:id
+ 
+ authorization: ""
+ 
+ ### Obter Profile
+ 
+  GET https://login-crud.onrender.com/users/profile
  
  authorization: ""
  
