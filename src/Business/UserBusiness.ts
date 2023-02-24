@@ -26,9 +26,12 @@ export class UserBusiness{
     signup = async(user:UserDTO)=>{
         try {
             const {name, email, password} = user
+            const verifyEmail = await this.userDatabase.verifyEmail(email)
+            
             if(!name || !email|| !password) throw new BodyNotInserted()
             if(!email.includes('@')) throw new EmailInvalid()
             if(password.length < 6) throw new PasswordInvalid()
+            if(verifyEmail[0].email === email) throw new EmailInvalid()
 
             const id: string = IdGenerator.GenerateId()
 

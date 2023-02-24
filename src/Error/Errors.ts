@@ -53,3 +53,9 @@ export class PasswordNotInserted extends CustomError{
         super(422, 'Senha não foi inserida.')
     }
 }
+
+export class EmailAlreadyUsed extends CustomError{
+    constructor(){
+        super(404, 'Este email já esta sendo utilizado por outra conta.')
+    }
+}
